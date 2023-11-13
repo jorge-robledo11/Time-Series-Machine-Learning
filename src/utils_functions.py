@@ -18,8 +18,8 @@ from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_percentage_error
 from sklearn.metrics import r2_score
 
-
-def time_series_behavior(data: pd.DataFrame, kind='lineplot', series_estacionarias=None):
+# Función para visualizar el comportamiento de las series
+def time_series_behavior(data: pd.DataFrame, kind='lineplot', figsize=(18, 4), series_estacionarias=None):
     
     """
     Visualiza series de tiempo, distribuciones de variables o cualquier otro tipo de gráfico en un DataFrame.
@@ -37,7 +37,7 @@ def time_series_behavior(data: pd.DataFrame, kind='lineplot', series_estacionari
         # Graficar las series de tiempo
         if kind == 'lineplot':
             for serie in data.columns:
-                plt.figure(figsize=(18, 4))
+                plt.figure(figsize=figsize)
                 data[serie].plot(marker='.', markerfacecolor='springgreen', markersize=7.5, color='royalblue')
                 plt.title(f'{serie}\n')
                 plt.ylabel(serie)
@@ -86,6 +86,7 @@ def time_series_behavior(data: pd.DataFrame, kind='lineplot', series_estacionari
             plt.show()
 
 
+# Graficar las series con outliers
 def series_with_outliers(data:pd.DataFrame, threshold=3.5):
     
     # Creamos una copia de nuestro dataframe desastacionalizado
@@ -128,6 +129,7 @@ def series_with_outliers(data:pd.DataFrame, threshold=3.5):
     return df_
 
 
+# Función para detectar outliers
 def get_out_outliers(data_original:pd.DataFrame, data_transformada:pd.DataFrame, residuos:pd.DataFrame, methods:list):
 
     df_ = data_transformada.copy()
@@ -241,7 +243,8 @@ def normality_test(data:pd.DataFrame, variables:list, significance_level=0.05):
     plt.tight_layout(pad=3)
     plt.show()
     
-    
+
+# Prueba de Homocedasticidad
 def homocedasticity_test(data:pd.DataFrame, significance_level=0.05):
     
     for serie in data.columns:
@@ -283,7 +286,8 @@ def acf_y_pcf(data:pd.DataFrame, lags=40):
         plt.grid(color='white', linestyle='-', linewidth=0.25)
         plt.tight_layout()       
      
-     
+
+# Función para graficar train, test y preds     
 def plotting_train_test_pred(train_data:pd.Series, test_data:pd.Series, modelo=None, preds_data=None):
     
     # Graficamos los datos de entrenamiento y prueba
@@ -313,6 +317,7 @@ def plotting_train_test_pred(train_data:pd.Series, test_data:pd.Series, modelo=N
         plt.tight_layout()
         
 
+# Función para evaular los modelos tradicionales
 def evaluacion_metrica(y_true:pd.Series, y_pred:pd.Series, modelo, serie_nombre=None):
     
     metricas = dict()
@@ -326,6 +331,7 @@ def evaluacion_metrica(y_true:pd.Series, y_pred:pd.Series, modelo, serie_nombre=
     return pd.DataFrame(metricas, index=[serie_nombre]).T
 
 
+# Función para graficar los residuos del modelo
 def plotting_residuals(modelo, series=None):
     
     # Crear una figura con ejes
@@ -343,6 +349,7 @@ def plotting_residuals(modelo, series=None):
     plt.show()
 
 
+# Prueba de Autocorrelación entre los residuos
 def autocorrelation_test(data:pd.DataFrame, significance_level=0.05, lags=40):
     
     for serie in data.columns:
@@ -359,7 +366,8 @@ def autocorrelation_test(data:pd.DataFrame, significance_level=0.05, lags=40):
         else:
             print(f'Los residuos no tienen autocorrelación a un nivel de significancia del {int(significance_level*100)}%\n')
             
-            
+
+# Prueba para conocer si los residuos se comportan como ruido blanco            
 def jarque_bera_test(data:pd.DataFrame, significance_level=0.05):
     
     for serie in data.columns:
@@ -376,7 +384,8 @@ def jarque_bera_test(data:pd.DataFrame, significance_level=0.05):
         else:
             print(f'Los residuos parecen ruido blanco a un nivel de significancia del {int(significance_level*100)}%\n')
             
-            
+
+# Función de estabilizadores de varianza            
 def variance_stabilizers(serie: pd.Series):
     
     # Definir las transformaciones

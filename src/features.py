@@ -93,8 +93,7 @@ def pipeline_linear_models(data: pd.DataFrame, tmp: list, target: str, n_windows
     
     # Scale some features
     scaler = CustomColumnsScaler(
-        variables=target_windows_mean,
-        scaler='standard'
+        variables=target_windows_mean
     )
 
     # Pipeline
